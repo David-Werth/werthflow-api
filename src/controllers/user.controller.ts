@@ -5,15 +5,14 @@ const userClient = db.user;
 
 export async function createUser(req: Request, res: Response) {
 	try {
-		const userId = req.params.id;
 		const profileData = req.body;
 
-		console.log(req.body);
+		console.log(profileData);
 
 		const profile = await userClient.create({
 			data: {
-				userId: userId,
 				name: profileData.name,
+				userId: profileData.userId,
 			},
 		});
 
