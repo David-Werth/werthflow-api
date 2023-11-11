@@ -12,30 +12,8 @@ model User {
   id     String @id @default(uuid())
   userId String @unique
   name   String
-
-  tasks Task[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Task {
-  id      String   @id @default(uuid())
-  type    TaskType @default(TODO)
-  title   String   @db.VarChar(300)
-  details String   @db.Text
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks  String @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([userId])
-}
-
-enum TaskType {
-  TODO
-  DOING
-  DONE
 }
