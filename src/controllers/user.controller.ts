@@ -35,10 +35,14 @@ export async function getUserById(req: Request, res: Response) {
 			},
 		});
 
-		res.status(201).json({ message: 'User: ', data: user });
+		if (user) {
+			res.status(201).json({ message: 'User: ', data: user });
+		} else {
+			res.status(404).json({ message: 'User not found' });
+		}
 	} catch (error: any) {
 		console.log(error);
-		res.status(400).json({ message: 'User not found: ', error: error });
+		res.status(400).json({ message: 'Something went wrong: ', error: error });
 	}
 }
 
