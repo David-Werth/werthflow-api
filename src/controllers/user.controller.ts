@@ -31,7 +31,19 @@ export async function getUserById(req: Request, res: Response) {
 				userId: userId,
 			},
 			include: {
-				folders: { include: { sortables: { include: { tasks: true } } } },
+				folders: {
+					include: {
+						sortables: {
+							include: {
+								tasks: {
+									orderBy: { index: 'asc' },
+								},
+							},
+							orderBy: { createdAt: 'asc' },
+						},
+					},
+					orderBy: { createdAt: 'desc' },
+				},
 			},
 		});
 
