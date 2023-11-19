@@ -12,13 +12,10 @@ export async function createUser(req: Request, res: Response) {
 			data: {
 				name: userData.name,
 				userId: userId,
-				tasks: userData.tasks,
 			},
 		});
 
-		res
-			.status(201)
-			.json({ message: 'New user created or updated: ', data: user });
+		res.status(201).json({ message: 'New user created: ', data: user });
 	} catch (error: any) {
 		console.log(error);
 		res.status(400).json({ message: 'Something went wrong: ', error: error });
@@ -29,16 +26,19 @@ export async function getUserById(req: Request, res: Response) {
 	try {
 		const userId = req.params.id;
 
-		const user = await userClient.findUnique({
+		const user = await userClient.findFirst({
 			where: {
 				userId: userId,
 			},
+			include: {
+				folders: { include: { sortables: { include: { tasks: true } } } },
+			},
 		});
 
-		res.status(200).json({ data: user });
+		res.status(201).json({ message: 'User: ', data: user });
 	} catch (error: any) {
 		console.log(error);
-		res.status(404).json({ message: 'User not found: ', error: error });
+		res.status(400).json({ message: 'User not found: ', error: error });
 	}
 }
 
@@ -56,22 +56,5 @@ export async function deleteUser(req: Request, res: Response) {
 	} catch (error: any) {
 		console.log(error);
 		res.status(404).json({ message: 'User not found: ', error: error });
-	}
-}
-
-export async function updateUserTasks(req: Request, res: Response) {
-	try {
-		const userId = req.params.id;
-		const newData = req.body;
-
-		const user = await userClient.update({
-			where: { userId: userId },
-			data: { tasks: newData.tasks },
-		});
-
-		res.status(200).json({ message: 'Updated user tasks: ', data: user });
-	} catch (error: any) {
-		console.log(error);
-		res.status(404).json({ message: 'Something went wrong: ', error: error });
 	}
 }

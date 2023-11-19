@@ -20,10 +20,11 @@ model User {
 }
 
 model Folder {
-  id String @id @default(uuid())
+  id    String @id @default(uuid())
+  title String
 
   userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   sortables Sortable[]
 
@@ -49,9 +50,10 @@ model Sortable {
 }
 
 model Task {
-  id      String @id @default(uuid())
+  id      String  @id @default(uuid())
+  index   Int
   title   String
-  content String @db.Text
+  content String? @db.Text
 
   sortableId String
   sortable   Sortable @relation(fields: [sortableId], references: [id], onDelete: Cascade)
