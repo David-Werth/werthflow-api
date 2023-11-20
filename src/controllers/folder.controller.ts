@@ -66,13 +66,11 @@ export async function updateFolderTitle(req: Request, res: Response) {
 
 export async function deleteFolder(req: Request, res: Response) {
 	try {
-		const userId = req.params.id;
-		const folderData = req.body;
+		const folderId = req.params.id;
 
 		const folder = await folderClient.delete({
 			where: {
-				id: folderData.id,
-				userId: userId,
+				id: folderId,
 			},
 		});
 
