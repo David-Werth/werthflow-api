@@ -43,16 +43,14 @@ export async function getTaskById(req: Request, res: Response) {
 
 export async function updateTask(req: Request, res: Response) {
 	try {
-		const sortableId = req.params.id;
+		const taskId = req.params.id;
 		const taskData = req.body;
 
 		const task = await taskClient.update({
 			where: {
-				id: taskData.id,
+				id: taskId,
 			},
 			data: {
-				sortableId: sortableId,
-				index: taskData.index,
 				title: taskData.title,
 				content: taskData.content,
 			},
