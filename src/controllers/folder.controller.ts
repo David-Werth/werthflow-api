@@ -44,16 +44,15 @@ export async function getFolderById(req: Request, res: Response) {
 
 export async function updateFolderTitle(req: Request, res: Response) {
 	try {
-		const userId = req.params.id;
+		const folderId = req.params.id;
 		const folderData = req.body;
 
 		const folder = await folderClient.update({
 			where: {
-				id: folderData.id,
-				userId: userId,
+				id: folderId,
 			},
 			data: {
-				title: folderData.title,
+				title: folderData.folderTitle,
 			},
 		});
 
