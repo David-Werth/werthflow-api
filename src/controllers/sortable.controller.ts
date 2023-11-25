@@ -13,6 +13,7 @@ export async function createSortable(req: Request, res: Response) {
 				folderId: folderId,
 				title: sortableData.title,
 			},
+			include: { tasks: true },
 		});
 
 		res.status(201).json({ message: 'New sortable created: ', data: sortable });
@@ -66,13 +67,11 @@ export async function updateSortabelTitle(req: Request, res: Response) {
 
 export async function deleteSortable(req: Request, res: Response) {
 	try {
-		const folderId = req.params.id;
-		const sortableData = req.body;
+		const sortableId = req.params.id;
 
 		const sortable = await sortableClient.delete({
 			where: {
-				id: sortableData.id,
-				folderId: folderId,
+				id: sortableId
 			},
 		});
 
