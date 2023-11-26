@@ -42,7 +42,7 @@ export async function getFolderById(req: Request, res: Response) {
 	}
 }
 
-export async function updateFolderTitle(req: Request, res: Response) {
+export async function updateFolder(req: Request, res: Response) {
 	try {
 		const folderId = req.params.id;
 		const folderData = req.body;
@@ -55,8 +55,7 @@ export async function updateFolderTitle(req: Request, res: Response) {
 				title: folderData.folderTitle,
 			},
 		});
-
-		res.status(200).json({ message: 'Folder name updated: ', data: folder });
+		res.status(200).json({ message: 'Folder title updated: ', data: folder });
 	} catch (error: any) {
 		console.log(error);
 		res.status(404).json({ message: 'Folder not found: ', error: error });

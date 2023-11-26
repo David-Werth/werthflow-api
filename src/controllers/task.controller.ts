@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { db } from '../utils/db';
+import { Task } from '@prisma/client';
 
 const taskClient = db.task;
 
