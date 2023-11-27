@@ -6,13 +6,13 @@ const sortableClient = db.sortable;
 
 export async function createSortable(req: Request, res: Response) {
 	try {
-		const folderId = req.params.id;
-		const sortableData = req.body;
+		const data = req.body;
 
 		const sortable = await sortableClient.create({
 			data: {
-				folderId: folderId,
-				title: sortableData.title,
+				userId: data.userId,
+				folderId: data.folderId,
+				title: data.title,
 			},
 			include: { tasks: true },
 		});
@@ -54,15 +54,19 @@ type TSortable = {
 };
 
 async function moveTasks(sortable: TSortable) {
-	const cleanedTasks = sortable.tasks.map((t) => {
-		return { index: t.index, title: t.title, content: t.content };
-	});
-	await sortableClient.update({
-		where: { id: sortable.id },
-		data: {
-			tasks: { deleteMany: {}, createMany: { data: cleanedTasks } },
-		},
-	});
+	console.log('running');
+	console.log(sortable);
+
+	try {
+		await sortableClient.update({
+			where: { id: sortable.id },
+			data: {
+				tasks: { deleteMany: {}, createMany: { data: sortable.tasks } },
+			},
+		});
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 export async function updateSortable(req: Request, res: Response) {
@@ -85,7 +89,9 @@ export async function updateSortable(req: Request, res: Response) {
 				.status(200)
 				.json({ message: 'Sortable title updated: ', data: sortable });
 		} else if (folderId === 'move' && sortableData[0]) {
-			sortableData.forEach((s: TSortable) => moveTasks(s));
+			sortableData.forEach((s: TSortable) => {
+				if (s.tasks.length !== 0) moveTasks(s);
+			});
 		}
 	} catch (error: any) {
 		console.log(error);

@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
 import { db } from '../utils/db';
-import { Task } from '@prisma/client';
 
 const taskClient = db.task;
 
 export async function createTask(req: Request, res: Response) {
 	try {
-		const sortableId = req.params.id;
-		const taskData = req.body;
+		const data = req.body;
 
 		const task = await taskClient.create({
 			data: {
-				sortableId: sortableId,
-				index: taskData.index,
-				title: taskData.title,
-				content: taskData.content,
+				userId: data.userId,
+				folderId: data.folderId,
+				sortableId: data.sortableId,
+				index: data.index,
+				title: data.title,
+				content: data.content,
 			},
 		});
 
