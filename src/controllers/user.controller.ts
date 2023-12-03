@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { db } from '../utils/db';
-import { Sortable, Task } from '@prisma/client';
 
 const userClient = db.user;
 
@@ -13,6 +12,32 @@ export async function createUser(req: Request, res: Response) {
 			data: {
 				name: userData.name,
 				userId: userId,
+			},
+			include: {
+				folders: {
+					include: {
+						sortables: {
+							include: {
+								tasks: {
+									orderBy: { index: 'asc' },
+								},
+							},
+							orderBy: { createdAt: 'asc' },
+						},
+					},
+					orderBy: { createdAt: 'desc' },
+				},
+				sortables: {
+					include: {
+						tasks: {
+							orderBy: { index: 'asc' },
+						},
+					},
+					orderBy: { createdAt: 'asc' },
+				},
+				tasks: {
+					orderBy: { index: 'asc' },
+				},
 			},
 		});
 
