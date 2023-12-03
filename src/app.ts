@@ -14,14 +14,12 @@ const app = express();
 app.use(morgan('dev'));
 app.use(helmet());
 
-// app.use(
-// 	cors({
-// 		origin: 'https://werthflow.davidwerth.com',
-// 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-// 	})
-// );
-
-app.use(cors());
+app.use(
+	cors({
+		origin: 'https://werthflow.davidwerth.com',
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	})
+);
 
 app.use(express.json());
 
