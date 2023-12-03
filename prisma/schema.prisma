@@ -12,8 +12,66 @@ model User {
   id     String @id @default(uuid())
   userId String @unique
   name   String
-  tasks  String @db.Text
+
+  folders   Folder[]
+  sortables Sortable[]
+  tasks     Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Folder {
+  id    String @id @default(uuid())
+  title String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  sortables Sortable[]
+  tasks     Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Sortable {
+  id    String @id @default(uuid())
+  title String
+
+  userId   String
+  user     User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  folderId String
+  folder   Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  tasks Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([folderId])
+  @@index([userId])
+}
+
+model Task {
+  id      String  @id @default(uuid())
+  index   Int
+  title   String
+  content String? @db.Text
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  folderId   String
+  folder     Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  sortableId String
+  sortable   Sortable @relation(fields: [sortableId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortableId])
+  @@index([folderId])
+  @@index([userId])
 }
