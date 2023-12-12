@@ -17,5 +17,3 @@ Feel free to create an account or use the demo account:
 
 - **Username:** admin
 - **Password:** admin
-
-hallo
